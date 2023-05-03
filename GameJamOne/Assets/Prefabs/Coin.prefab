@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 4724298283470441306}
   - component: {fileID: 4724298283470441307}
   - component: {fileID: 4724298283470441308}
-  - component: {fileID: 5356725235863160768}
+  - component: {fileID: 4110829456520142778}
   m_Layer: 0
   m_Name: Coin
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &5356725235863160768
+--- !u!114 &4110829456520142778
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,3 +113,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 25
   rotationDirection: {x: 0, y: 0, z: 14}
+  theScore: 0
