@@ -3,22 +3,31 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEditor;
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float playerSpeed;
-    [SerializeField] private float playerJumpHeight;
-    [SerializeField] private Rigidbody playerRiBo;
+    [SerializeField] float playerSpeed;
+    [SerializeField] float playerJumpHeight;
+    [SerializeField] Rigidbody playerRiBo;
+    [SerializeField] TextMeshProUGUI countDownText = null;
 
+    private bool canJump;
+    private float initialSpeed;
+    private float startSpeed;
     private float resetTimer;
+
     private Vector3 currentPosition;
     private Vector3 initialPosition;
     private Vector3 initialScale;
-    private float initialSpeed;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        startSpeed = 0;
         initialSpeed = playerSpeed;
+        playerSpeed = startSpeed;
         initialPosition = transform.position;
         currentPosition = transform.position;
         initialScale = transform.localScale;
@@ -28,10 +37,10 @@ public class Player : MonoBehaviour
     void Update()
     {
         resetTimer += Time.deltaTime;
-        Debug.Log(resetTimer);
+        CountDownStart();
+        //Debug.Log(resetTimer);
         transform.position += transform.forward * Time.deltaTime * playerSpeed;
         MovementInput();
-        CountDownStart();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,6 +49,20 @@ public class Player : MonoBehaviour
         transform.position = initialPosition;
         ResetTimer();
     }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.layer == 3)
+        {
+            canJump = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        canJump = false;
+    }
+
     private void MovementInput()
     {
         if (Input.GetKeyDown(KeyCode.D) && currentPosition.x < 4)
@@ -57,7 +80,7 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             currentPosition = initialPosition;
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && canJump)
         {
             playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * playerJumpHeight, transform.position.z));
         }
@@ -76,7 +99,7 @@ public class Player : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2, transform.localScale.z);
             transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
         }
-    }
+    }  
 
     private void ResetTimer()
     {
@@ -86,11 +109,28 @@ public class Player : MonoBehaviour
 
     private void CountDownStart()
     {
-        if (resetTimer > 3 && transform.position == initialPosition)
+        if (resetTimer <=1 && transform.position == initialPosition)
         {
+            countDownText.text = "3";
+        }
+        else if (resetTimer <= 2 && transform.position == initialPosition)
+        {
+            countDownText.text = "2";
+        }
+        else if (resetTimer <= 3 && transform.position == initialPosition)
+        {
+            countDownText.text = "1";
+        }
+        else if (resetTimer > 3 && transform.position == initialPosition)
+        {
+            countDownText.text = "GO";
             Debug.Log("Should Start Moving Now.");
-            playerSpeed = initialSpeed;
+            playerSpeed = initialSpeed;      
+        }
+        else if (resetTimer > 4)
+        {
             resetTimer = 0;
+            countDownText.text = "";
         }
     }
 }
