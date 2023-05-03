@@ -7,11 +7,16 @@ using TMPro;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] AudioSource source;
+    [SerializeField] AudioSource sourceCounter;
+    [SerializeField] AudioClip clip;
+    [SerializeField] AudioClip counter;
     [SerializeField] float playerSpeed;
     [SerializeField] float playerJumpHeight;
     [SerializeField] Rigidbody playerRiBo;
     [SerializeField] TextMeshProUGUI countDownText = null;
 
+    private float audioDelayed;
     private bool canJump;
     private float initialSpeed;
     private float startSpeed;
@@ -25,6 +30,9 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioDelayed = 18f;
+        sourceCounter = GetComponent<AudioSource>();
+        sourceCounter.clip = counter;
         startSpeed = 0;
         initialSpeed = playerSpeed;
         playerSpeed = startSpeed;
@@ -37,9 +45,9 @@ public class Player : MonoBehaviour
     void Update()
     {
         resetTimer += Time.deltaTime;
-        CountDownStart();
         //Debug.Log(resetTimer);
         transform.position += transform.forward * Time.deltaTime * playerSpeed;
+        CountDownStart();
         MovementInput();
     }
 
@@ -67,11 +75,13 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D) && currentPosition.x < 4)
         {
+            source.PlayOneShot(clip);
             transform.position = new Vector3(transform.position.x + 5, transform.position.y, transform.position.z);
             currentPosition = transform.position;
         }
         if (Input.GetKeyDown(KeyCode.A) && currentPosition.x > -4)
         {
+            source.PlayOneShot(clip);
             transform.position = new Vector3(transform.position.x - 5, transform.position.y, transform.position.z);
             currentPosition = transform.position;
         }
@@ -90,6 +100,7 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
+            source.PlayOneShot(clip);
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
             transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
             currentPosition = transform.position;
@@ -110,20 +121,40 @@ public class Player : MonoBehaviour
     private void CountDownStart()
     {
         if (resetTimer <=1 && transform.position == initialPosition)
-        {
+        { 
             countDownText.text = "3";
+            if (!sourceCounter.isPlaying)
+            {
+                sourceCounter.clip = counter;
+                sourceCounter.PlayDelayed(audioDelayed*Time.deltaTime);
+            }
         }
-        else if (resetTimer <= 2 && transform.position == initialPosition)
+        else if (resetTimer >1 && resetTimer <= 2 && transform.position == initialPosition)
         {
             countDownText.text = "2";
+            if (!sourceCounter.isPlaying)
+            {
+                sourceCounter.clip = counter;
+                sourceCounter.PlayDelayed(audioDelayed * Time.deltaTime);
+            }
         }
-        else if (resetTimer <= 3 && transform.position == initialPosition)
+        else if (resetTimer >2 && resetTimer <= 3 && transform.position == initialPosition)
         {
             countDownText.text = "1";
+            if (!sourceCounter.isPlaying)
+            {
+                sourceCounter.clip = counter;
+                sourceCounter.PlayDelayed(audioDelayed * Time.deltaTime);
+            }
         }
         else if (resetTimer > 3 && transform.position == initialPosition)
         {
             countDownText.text = "GO";
+            if (!sourceCounter.isPlaying)
+            {
+                sourceCounter.clip = counter;
+                sourceCounter.PlayDelayed(audioDelayed * Time.deltaTime);
+            }
             Debug.Log("Should Start Moving Now.");
             playerSpeed = initialSpeed;      
         }
