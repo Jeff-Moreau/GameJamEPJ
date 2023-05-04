@@ -49,14 +49,16 @@ public class Player : MonoBehaviour
         transform.position += transform.forward * Time.deltaTime * playerSpeed;
         CountDownStart();
         MovementInput();
+
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        playerSpeed = 0;
-        transform.position = initialPosition;
-        ResetTimer();
-    }
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    playerSpeed = 0;
+    //    transform.position = initialPosition;
+    //    ResetTimer();
+    //}
 
     private void OnCollisionStay(Collision collision)
     {

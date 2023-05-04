@@ -42,5 +42,13 @@ public class HealthAndDamage : MonoBehaviour
         }
     }
 
-   
+    void Update()
+    {
+        if (health == 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
 }
