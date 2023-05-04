@@ -20,14 +20,6 @@ public class GroundSpawner : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            SpawnTile();
-        }
-    }
-
     public void SpawnTile()
     {
         spawnedRoadAmount++;
