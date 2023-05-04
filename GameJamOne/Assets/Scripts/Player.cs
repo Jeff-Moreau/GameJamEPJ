@@ -53,9 +53,13 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        playerSpeed = 0;
-        transform.position = initialPosition;
-        ResetTimer();
+        if (other.gameObject.tag == "Obsticle")
+        {
+            playerSpeed = 0;
+            transform.position = initialPosition;
+            ResetTimer();
+        }
+        
     }
 
     private void OnCollisionStay(Collision collision)
