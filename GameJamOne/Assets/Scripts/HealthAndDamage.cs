@@ -25,6 +25,14 @@ public class HealthAndDamage : MonoBehaviour
         if (collision.gameObject.CompareTag("Obstacle"))
         {
             TakeDamage(10);
+            if (health > 0)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -42,13 +50,7 @@ public class HealthAndDamage : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (health == 0)
-        {
-            Destroy(gameObject);
-        }
-    }
+
 
 
 }
