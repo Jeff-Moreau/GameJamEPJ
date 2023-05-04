@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] float playerJumpHeight;
     [SerializeField] Rigidbody playerRiBo;
     [SerializeField] TextMeshProUGUI countDownText = null;
+    [SerializeField] GameObject spawner;
 
     private float audioDelayed;
     private bool canJump;
@@ -60,7 +61,18 @@ public class Player : MonoBehaviour
             transform.position = initialPosition;
             ResetTimer();
         }
-        
+        if (other.gameObject.layer == 3)
+        {
+            spawner.GetComponent<GroundSpawner>().SpawnTile();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.layer == 3)
+        {
+            Destroy(other.gameObject, 0.5f);
+        }
     }
 
     private void OnCollisionStay(Collision collision)
