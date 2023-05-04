@@ -9,20 +9,20 @@ public class ItemSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ItemRandomSpawn(Random.Range(0,20));
+        ItemRandomSpawn(Random.Range(0,30));
     }
 
     public void ItemRandomSpawn(int numCheck)
     {
-        if(numCheck <= 5)
+        if(numCheck <= 3)
         {
             Instantiate(itemCoin, transform.position, transform.rotation);
         }
-        else if (numCheck >5 && numCheck <= 7)
+        else if (numCheck == 6)
         {
             Instantiate(itemHealth, transform.position, transform.rotation);
         }
-        else if (numCheck >=7)
+        else if (numCheck >6)
         {
 
         }

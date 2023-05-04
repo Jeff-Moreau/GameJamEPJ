@@ -48,10 +48,20 @@ public class Player : MonoBehaviour
     {
         resetTimer += Time.deltaTime;
         //Debug.Log(resetTimer);
-        transform.position += transform.forward * Time.deltaTime * playerSpeed;
+        
         CountDownStart();
         MovementInput();
-
+        if (currentPosition.x > 5)
+        {
+            currentPosition.x = 5;
+            transform.position = currentPosition;
+        }
+        if (currentPosition.x < -5)
+        {
+            currentPosition.x = -5;
+            transform.position = currentPosition;
+        }
+        transform.position += transform.forward * Time.deltaTime * playerSpeed;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -89,6 +99,14 @@ public class Player : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         canJump = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Coin")
+        {
+            Destroy(collision.gameObject);
+        }
     }
 
     private void MovementInput()
