@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] Rigidbody playerRiBo;
     [SerializeField] TextMeshProUGUI countDownText = null;
     [SerializeField] GameObject spawner;
+    [SerializeField] GameObject spawnerOne;
 
     private float audioDelayed;
     private bool canJump;
@@ -64,6 +65,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.layer == 3)
         {
             spawner.GetComponent<GroundSpawner>().SpawnTile();
+            //spawnerOne.GetComponent<ItemSpawner>().ItemRandomSpawn();
         }
     }
 
@@ -72,6 +74,7 @@ public class Player : MonoBehaviour
         if(other.gameObject.layer == 3)
         {
             Destroy(other.gameObject, 0.5f);
+
         }
     }
 
