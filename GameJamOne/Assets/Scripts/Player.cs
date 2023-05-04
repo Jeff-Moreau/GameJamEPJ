@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
         transform.position += transform.forward * Time.deltaTime * playerSpeed;
         CountDownStart();
         MovementInput();
+
     }
 
     private void OnTriggerEnter(Collider other)
