@@ -11,5 +11,8 @@ public class GameVariables : ScriptableObject
     public int coinsCollected;
     public float playerSpeed;
     public float playerJumpHeight;
-    
+    public int goodDecision;
+    public int badDecision;
+
+
 }

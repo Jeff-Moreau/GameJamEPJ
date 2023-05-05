@@ -4,108 +4,90 @@ using System.Threading;
 using UnityEditor;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] AudioSource source;
-    [SerializeField] AudioSource sourceCounter;
-    [SerializeField] AudioClip clip;
-    [SerializeField] AudioClip counter;
-    [SerializeField] float playerSpeed;
-    [SerializeField] float playerJumpHeight;
-    [SerializeField] Rigidbody playerRiBo;
-    [SerializeField] TextMeshProUGUI countDownText = null;
-    [SerializeField] TextMeshProUGUI totalCoins = null;
-    [SerializeField] GameObject spawner;
-    [SerializeField] GameObject spawnerOne;
+    [SerializeField] private Rigidbody playerRiBo;
+    [SerializeField] private GameObject spawner;
+    [SerializeField] private TextMeshProUGUI countDownText;
+    [SerializeField] private TextMeshProUGUI totalCoins;
+    [SerializeField] private TextMeshProUGUI countTimer;
+    [SerializeField] private TextMeshProUGUI playerHUDHealth;
+    [SerializeField] private AudioSource playerSounds;
+    [SerializeField] private AudioSource gameSounds;
+    [SerializeField] private GameVariables gameVariables;
+    [SerializeField] private GameObjects objectsInGame;
+    [SerializeField] private SoundProperties soundProperties;
+    [SerializeField] private GameObject endScreen;
+    [SerializeField] private GameObject mainHUD;
 
-    private int coinsCollected = 0;
-    private float audioDelayed;
     private bool canJump;
+    private bool playerCanMove;
     private float initialSpeed;
     private float startSpeed;
     private float resetTimer;
-    private bool playerCanMove = false;
-
     private Vector3 currentPosition;
     private Vector3 initialPosition;
     private Vector3 initialScale;
 
-
     // Start is called before the first frame update
     void Start()
     {
-        //totalCoins.text = "" + coinsCollected;
-        audioDelayed = 18f;
-        sourceCounter = GetComponent<AudioSource>();
-        sourceCounter.clip = counter;
-        startSpeed = 0;
-<<<<<<< HEAD
-        initialSpeed = playerSpeed;
-        playerSpeed = startSpeed;
+        mainHUD.SetActive(true);
+        endScreen.SetActive(false);
         initialPosition = transform.position;
-=======
+        gameVariables.playerSpeed = 20;
+        initialSpeed = gameVariables.playerSpeed;
+        initialScale = transform.localScale;
+
+        startSpeed = 0;
         gameVariables.playerSpeed = startSpeed;
         playerCanMove = false;
 
+        gameVariables.goodDecision = 0;
+        gameVariables.badDecision = 0;
         gameVariables.playerMaxHealth = 100;
         gameVariables.playerCurrentHealth = 100;
         gameVariables.coinsCollected = 0;
         totalCoins.text = "" + gameVariables.coinsCollected;
 
->>>>>>> Jeff2
         currentPosition = transform.position;
-        initialScale = transform.localScale;
     }
-
     // Update is called once per frame
     void Update()
     {
         resetTimer += Time.deltaTime;
-        //Debug.Log(resetTimer);
-        
+        playerHUDHealth.text = "" + gameVariables.playerCurrentHealth;
+        PlayerDead();
         CountDownStart();
         MovementInput();
-        if (currentPosition.x > 5)
-        {
-            currentPosition.x = 5;
-            transform.position = currentPosition;
-        }
-        if (currentPosition.x < -5)
-        {
-            currentPosition.x = -5;
-            transform.position = currentPosition;
-        }
-        transform.position += transform.forward * Time.deltaTime * playerSpeed;
+        NotOffTrack();
+        transform.position += transform.forward * Time.deltaTime * gameVariables.playerSpeed;
     }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Obsticle")
+        if (other.gameObject.tag == "Obstacle")
         {
-<<<<<<< HEAD
-            playerSpeed = 0;
-            transform.position = initialPosition;
-            ResetTimer();
-=======
             gameVariables.playerCurrentHealth -= 10;
->>>>>>> Jeff2
         }
         if (other.gameObject.layer == 3)
         {
             spawner.GetComponent<GroundSpawner>().SpawnTile();
-            //spawnerOne.GetComponent<ItemSpawner>().ItemRandomSpawn();
         }
         if (other.gameObject.tag == "Coin")
         {
-<<<<<<< HEAD
-            coinsCollected++;
-            Destroy(other.gameObject);
-            //totalCoins.text = "" + coinsCollected;
-=======
             gameVariables.coinsCollected++;
             Destroy(other.gameObject);
             totalCoins.text = "" + gameVariables.coinsCollected;
+            if (gameVariables.playerCurrentHealth >= 50)
+            {
+                gameVariables.goodDecision += 1;
+            }
+            else
+            {
+                gameVariables.badDecision += 1;
+            }
         }
         if (other.gameObject.tag == "Orb")
         {
@@ -114,10 +96,16 @@ public class Player : MonoBehaviour
                 gameVariables.playerCurrentHealth += 10;
                 Destroy(other.gameObject);
             }
->>>>>>> Jeff2
+            if (gameVariables.playerCurrentHealth <= 50)
+            {
+                gameVariables.goodDecision += 1;
+            }
+            else
+            {
+                gameVariables.badDecision += 1;
+            }
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         if(other.gameObject.layer == 3)
@@ -127,7 +115,6 @@ public class Player : MonoBehaviour
             
         }
     }
-
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.layer == 3)
@@ -135,25 +122,23 @@ public class Player : MonoBehaviour
             canJump = true;
         }
     }
-
     private void OnCollisionExit(Collision collision)
     {
         canJump = false;
     }
-
     private void MovementInput()
     {
         if (playerCanMove == true)
         {
             if (Input.GetKeyDown(KeyCode.D) && currentPosition.x < 4)
             {
-                source.PlayOneShot(clip);
+                playerSounds.PlayOneShot(soundProperties.audioPlayerMove);
                 transform.position = new Vector3(transform.position.x + 5, transform.position.y, transform.position.z);
                 currentPosition = transform.position;
             }
             if (Input.GetKeyDown(KeyCode.A) && currentPosition.x > -4)
             {
-                source.PlayOneShot(clip);
+                playerSounds.PlayOneShot(soundProperties.audioPlayerMove);
                 transform.position = new Vector3(transform.position.x - 5, transform.position.y, transform.position.z);
                 currentPosition = transform.position;
             }
@@ -164,15 +149,17 @@ public class Player : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Space) && canJump)
             {
-                playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * playerJumpHeight, transform.position.z));
+                playerRiBo.AddForce(Vector3.up * gameVariables.playerJumpHeight);
+                transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             }
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * (-playerJumpHeight / 3), transform.position.z));
+                playerRiBo.AddForce(Vector3.up * -(gameVariables.playerJumpHeight*2));
+                transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             }
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                source.PlayOneShot(clip);
+                playerSounds.PlayOneShot(soundProperties.audioPlayerMove);
                 transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
                 transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
                 currentPosition = transform.position;
@@ -184,13 +171,12 @@ public class Player : MonoBehaviour
             }
         }
     }  
-
-<<<<<<< HEAD
-=======
     private void PlayerDead()
     {
         if (gameVariables.playerCurrentHealth <= 0)
         {
+            mainHUD.SetActive(false);
+            endScreen.SetActive(true);
             playerCanMove = false;
             gameVariables.playerSpeed = 0;
         }
@@ -208,52 +194,50 @@ public class Player : MonoBehaviour
             transform.position = currentPosition;
         }
     }
->>>>>>> Jeff2
     private void ResetTimer()
     {
         resetTimer = 0;
         Debug.Log("Time was Reset to 0");
     }
-
     private void CountDownStart()
     {
         if (resetTimer <=1 && transform.position == initialPosition)
         { 
             countDownText.text = "3";
-            if (!sourceCounter.isPlaying)
+            if (!gameSounds.isPlaying)
             {
-                sourceCounter.clip = counter;
-                sourceCounter.PlayDelayed(audioDelayed*Time.deltaTime);
+                gameSounds.clip = soundProperties.audioGameCount;
+                gameSounds.PlayDelayed(soundProperties.gameCountDelay*Time.deltaTime);
             }
         }
         else if (resetTimer >1 && resetTimer <= 2 && transform.position == initialPosition)
         {
             countDownText.text = "2";
-            if (!sourceCounter.isPlaying)
+            if (!gameSounds.isPlaying)
             {
-                sourceCounter.clip = counter;
-                sourceCounter.PlayDelayed(audioDelayed * Time.deltaTime);
+                gameSounds.clip = soundProperties.audioGameCount;
+                gameSounds.PlayDelayed(soundProperties.gameCountDelay * Time.deltaTime);
             }
         }
         else if (resetTimer >2 && resetTimer <= 3 && transform.position == initialPosition)
         {
             countDownText.text = "1";
-            if (!sourceCounter.isPlaying)
+            if (!gameSounds.isPlaying)
             {
-                sourceCounter.clip = counter;
-                sourceCounter.PlayDelayed(audioDelayed * Time.deltaTime);
+                gameSounds.clip = soundProperties.audioGameCount;
+                gameSounds.PlayDelayed(soundProperties.gameCountDelay * Time.deltaTime);
             }
         }
         else if (resetTimer > 3 && transform.position == initialPosition)
         {
             countDownText.text = "GO";
-            if (!sourceCounter.isPlaying)
+            if (!gameSounds.isPlaying)
             {
-                sourceCounter.clip = counter;
-                sourceCounter.PlayDelayed(audioDelayed * Time.deltaTime);
+                gameSounds.clip = soundProperties.audioGameCount;
+                gameSounds.PlayDelayed(soundProperties.gameCountDelay * Time.deltaTime);
             }
-            Debug.Log("Should Start Moving Now.");
-            playerSpeed = initialSpeed;
+            //Debug.Log("Should Start Moving Now.");
+            gameVariables.playerSpeed = initialSpeed;
             playerCanMove = true;
         }
         else if (resetTimer > 4)
