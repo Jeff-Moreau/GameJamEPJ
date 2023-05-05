@@ -18,7 +18,7 @@ public class ItemSpawner : MonoBehaviour
         {
             Instantiate(itemCoin, transform.position, transform.rotation);
         }
-        else if (numCheck == 6)
+        else if (numCheck == 5 || numCheck == 6)
         {
             Instantiate(itemHealth, transform.position, transform.rotation);
         }

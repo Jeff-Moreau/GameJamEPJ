@@ -40,9 +40,20 @@ public class Player : MonoBehaviour
         sourceCounter = GetComponent<AudioSource>();
         sourceCounter.clip = counter;
         startSpeed = 0;
+<<<<<<< HEAD
         initialSpeed = playerSpeed;
         playerSpeed = startSpeed;
         initialPosition = transform.position;
+=======
+        gameVariables.playerSpeed = startSpeed;
+        playerCanMove = false;
+
+        gameVariables.playerMaxHealth = 100;
+        gameVariables.playerCurrentHealth = 100;
+        gameVariables.coinsCollected = 0;
+        totalCoins.text = "" + gameVariables.coinsCollected;
+
+>>>>>>> Jeff2
         currentPosition = transform.position;
         initialScale = transform.localScale;
     }
@@ -72,9 +83,13 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.tag == "Obsticle")
         {
+<<<<<<< HEAD
             playerSpeed = 0;
             transform.position = initialPosition;
             ResetTimer();
+=======
+            gameVariables.playerCurrentHealth -= 10;
+>>>>>>> Jeff2
         }
         if (other.gameObject.layer == 3)
         {
@@ -83,9 +98,23 @@ public class Player : MonoBehaviour
         }
         if (other.gameObject.tag == "Coin")
         {
+<<<<<<< HEAD
             coinsCollected++;
             Destroy(other.gameObject);
             //totalCoins.text = "" + coinsCollected;
+=======
+            gameVariables.coinsCollected++;
+            Destroy(other.gameObject);
+            totalCoins.text = "" + gameVariables.coinsCollected;
+        }
+        if (other.gameObject.tag == "Orb")
+        {
+            if (gameVariables.playerCurrentHealth < gameVariables.playerMaxHealth)
+            {
+                gameVariables.playerCurrentHealth += 10;
+                Destroy(other.gameObject);
+            }
+>>>>>>> Jeff2
         }
     }
 
@@ -94,7 +123,7 @@ public class Player : MonoBehaviour
         if(other.gameObject.layer == 3)
         {
             
-            Destroy(other.gameObject, 0.5f);
+            Destroy(other.gameObject, 2);
             
         }
     }
@@ -156,6 +185,30 @@ public class Player : MonoBehaviour
         }
     }  
 
+<<<<<<< HEAD
+=======
+    private void PlayerDead()
+    {
+        if (gameVariables.playerCurrentHealth <= 0)
+        {
+            playerCanMove = false;
+            gameVariables.playerSpeed = 0;
+        }
+    }
+    private void NotOffTrack()
+    {
+        if (currentPosition.x > 5)
+        {
+            currentPosition.x = 5;
+            transform.position = currentPosition;
+        }
+        if (currentPosition.x < -5)
+        {
+            currentPosition.x = -5;
+            transform.position = currentPosition;
+        }
+    }
+>>>>>>> Jeff2
     private void ResetTimer()
     {
         resetTimer = 0;
