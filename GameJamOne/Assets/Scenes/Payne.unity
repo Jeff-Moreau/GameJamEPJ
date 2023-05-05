@@ -263,6 +263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundTile: {fileID: 6209038784424449790, guid: 3d7b726a0599e374f9f83560726257f5, type: 3}
   roadTile: {fileID: 2149435154250311887, guid: 8db281e828c83e94197ecebe0e962f97, type: 3}
+  animObstacle: {fileID: 4445336941643624152, guid: 0e46ef8f3618a2344951bfbf8118c5c8, type: 3}
 --- !u!1 &1665101038
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,9 +4,11 @@ public class GroundSpawner : MonoBehaviour
 {
     public GameObject groundTile;
     public GameObject roadTile;
+    public GameObject animObstacle;
     private int roadTileAmount = 0;
     private int spawnedRoadAmount = 0;
     Vector3 nextSpawnPoint;
+    private int animObstacleAmount = 0;
 
     private int lowNum = 9;
     private int highNum = 19;
