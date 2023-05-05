@@ -15,13 +15,17 @@ public class Player : MonoBehaviour
     [SerializeField] float playerJumpHeight;
     [SerializeField] Rigidbody playerRiBo;
     [SerializeField] TextMeshProUGUI countDownText = null;
+    [SerializeField] TextMeshProUGUI totalCoins = null;
     [SerializeField] GameObject spawner;
+    [SerializeField] GameObject spawnerOne;
 
+    private int coinsCollected = 0;
     private float audioDelayed;
     private bool canJump;
     private float initialSpeed;
     private float startSpeed;
     private float resetTimer;
+    private bool playerCanMove = false;
 
     private Vector3 currentPosition;
     private Vector3 initialPosition;
@@ -31,6 +35,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        totalCoins.text = "" + coinsCollected;
         audioDelayed = 18f;
         sourceCounter = GetComponent<AudioSource>();
         sourceCounter.clip = counter;
@@ -47,10 +52,20 @@ public class Player : MonoBehaviour
     {
         resetTimer += Time.deltaTime;
         //Debug.Log(resetTimer);
-        transform.position += transform.forward * Time.deltaTime * playerSpeed;
+        
         CountDownStart();
         MovementInput();
-
+        if (currentPosition.x > 5)
+        {
+            currentPosition.x = 5;
+            transform.position = currentPosition;
+        }
+        if (currentPosition.x < -5)
+        {
+            currentPosition.x = -5;
+            transform.position = currentPosition;
+        }
+        transform.position += transform.forward * Time.deltaTime * playerSpeed;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -64,6 +79,13 @@ public class Player : MonoBehaviour
         if (other.gameObject.layer == 3)
         {
             spawner.GetComponent<GroundSpawner>().SpawnTile();
+            //spawnerOne.GetComponent<ItemSpawner>().ItemRandomSpawn();
+        }
+        if (other.gameObject.tag == "Coin")
+        {
+            coinsCollected++;
+            Destroy(other.gameObject);
+            totalCoins.text = "" + coinsCollected;
         }
     }
 
@@ -71,7 +93,9 @@ public class Player : MonoBehaviour
     {
         if(other.gameObject.layer == 3)
         {
+            
             Destroy(other.gameObject, 0.5f);
+            
         }
     }
 
@@ -90,42 +114,45 @@ public class Player : MonoBehaviour
 
     private void MovementInput()
     {
-        if (Input.GetKeyDown(KeyCode.D) && currentPosition.x < 4)
+        if (playerCanMove == true)
         {
-            source.PlayOneShot(clip);
-            transform.position = new Vector3(transform.position.x + 5, transform.position.y, transform.position.z);
-            currentPosition = transform.position;
-        }
-        if (Input.GetKeyDown(KeyCode.A) && currentPosition.x > -4)
-        {
-            source.PlayOneShot(clip);
-            transform.position = new Vector3(transform.position.x - 5, transform.position.y, transform.position.z);
-            currentPosition = transform.position;
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-            currentPosition = initialPosition;
-        }
-        if (Input.GetKeyDown(KeyCode.Space) && canJump)
-        {
-            playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * playerJumpHeight, transform.position.z));
-        }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * (-playerJumpHeight / 3), transform.position.z));
-        }
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            source.PlayOneShot(clip);
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
-            transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-            currentPosition = transform.position;
-        }
-        if (Input.GetKeyUp(KeyCode.LeftControl))
-        {
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2, transform.localScale.z);
-            transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+            if (Input.GetKeyDown(KeyCode.D) && currentPosition.x < 4)
+            {
+                source.PlayOneShot(clip);
+                transform.position = new Vector3(transform.position.x + 5, transform.position.y, transform.position.z);
+                currentPosition = transform.position;
+            }
+            if (Input.GetKeyDown(KeyCode.A) && currentPosition.x > -4)
+            {
+                source.PlayOneShot(clip);
+                transform.position = new Vector3(transform.position.x - 5, transform.position.y, transform.position.z);
+                currentPosition = transform.position;
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+                currentPosition = initialPosition;
+            }
+            if (Input.GetKeyDown(KeyCode.Space) && canJump)
+            {
+                playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * playerJumpHeight, transform.position.z));
+            }
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * (-playerJumpHeight / 3), transform.position.z));
+            }
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                source.PlayOneShot(clip);
+                transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
+                transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+                currentPosition = transform.position;
+            }
+            if (Input.GetKeyUp(KeyCode.LeftControl))
+            {
+                transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2, transform.localScale.z);
+                transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+            }
         }
     }  
 
@@ -173,7 +200,8 @@ public class Player : MonoBehaviour
                 sourceCounter.PlayDelayed(audioDelayed * Time.deltaTime);
             }
             Debug.Log("Should Start Moving Now.");
-            playerSpeed = initialSpeed;      
+            playerSpeed = initialSpeed;
+            playerCanMove = true;
         }
         else if (resetTimer > 4)
         {
