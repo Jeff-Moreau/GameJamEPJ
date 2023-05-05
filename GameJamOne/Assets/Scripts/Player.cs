@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -198,6 +199,11 @@ public class Player : MonoBehaviour
     {
         resetTimer = 0;
         Debug.Log("Time was Reset to 0");
+    }
+
+    public void LetsReset()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     private void CountDownStart()
     {
