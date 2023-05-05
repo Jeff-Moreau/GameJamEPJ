@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] TextMeshProUGUI totalCoins = null;
     [SerializeField] GameObject spawner;
     [SerializeField] GameObject spawnerOne;
+    [SerializeField] TextMeshProUGUI countTimer;
 
     private int coinsCollected = 0;
     private float audioDelayed;
@@ -26,6 +27,10 @@ public class Player : MonoBehaviour
     private float startSpeed;
     private float resetTimer;
     private bool playerCanMove = false;
+    private int timeMiliSeconds;
+    private int timeSeconds;
+    private int timeMinutes;
+    private float gameTime;
 
     private Vector3 currentPosition;
     private Vector3 initialPosition;
@@ -45,14 +50,18 @@ public class Player : MonoBehaviour
         initialPosition = transform.position;
         currentPosition = transform.position;
         initialScale = transform.localScale;
+        timeMiliSeconds = 0;
+        timeSeconds = 0;
+        timeMinutes = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        gameTime += Time.deltaTime;
         resetTimer += Time.deltaTime;
         //Debug.Log(resetTimer);
-        
+        TheTimer();
         CountDownStart();
         MovementInput();
         if (currentPosition.x > 5)
@@ -66,6 +75,19 @@ public class Player : MonoBehaviour
             transform.position = currentPosition;
         }
         transform.position += transform.forward * Time.deltaTime * playerSpeed;
+    }
+
+    private void TheTimer()
+    {
+        if (gameTime < 1)
+        {
+            timeMiliSeconds = (int)gameTime;
+        }
+        if (gameTime >= 1 && gameTime <60)
+        {
+            timeSeconds = (int)gameTime;
+        }
+        countTimer.text = "" + timeMinutes + ":" + timeSeconds + ":" + timeMiliSeconds;
     }
 
     private void OnTriggerEnter(Collider other)
