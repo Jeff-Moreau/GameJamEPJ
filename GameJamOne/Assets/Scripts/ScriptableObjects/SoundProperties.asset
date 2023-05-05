@@ -15,3 +15,4 @@ MonoBehaviour:
   audioMainMusic: {fileID: 8300000, guid: 07a1bed84023e7147b0af19c09a72a3a, type: 3}
   audioPlayerMove: {fileID: 8300000, guid: e27cc9a88b4aa2b4e8472294b857dd10, type: 3}
   audioGameCount: {fileID: 8300000, guid: 8acbae28c19f326469e47d95f870fab9, type: 3}
+  gameCountDelay: 18

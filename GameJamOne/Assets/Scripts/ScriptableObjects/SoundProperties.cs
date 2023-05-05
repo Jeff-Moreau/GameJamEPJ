@@ -8,4 +8,5 @@ public class SoundProperties : ScriptableObject
     public AudioClip audioMainMusic;
     public AudioClip audioPlayerMove;
     public AudioClip audioGameCount;
+    public float gameCountDelay;
 }

@@ -9,8 +9,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Rigidbody playerRiBo;
     [SerializeField] private GameObject spawner;
-    [SerializeField] private TextMeshProUGUI countDownText = null;
-    [SerializeField] private TextMeshProUGUI totalCoins = null;
+    [SerializeField] private TextMeshProUGUI countDownText;
+    [SerializeField] private TextMeshProUGUI totalCoins;
     [SerializeField] private TextMeshProUGUI countTimer;
     [SerializeField] private AudioSource playerSounds;
     [SerializeField] private AudioSource gameSounds;
@@ -18,17 +18,15 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObjects objectsInGame;
     [SerializeField] private SoundProperties soundProperties;
 
-    private float audioDelayed;
-    private bool canJump;
-    private float initialSpeed;
-    private float startSpeed;
-    private float resetTimer;
-    private bool playerCanMove = false;
     private int timeMiliSeconds;
     private int timeSeconds;
     private int timeMinutes;
+    private bool canJump;
+    private bool playerCanMove;
+    private float initialSpeed;
+    private float startSpeed;
+    private float resetTimer;
     private float gameTime;
-
     private Vector3 currentPosition;
     private Vector3 initialPosition;
     private Vector3 initialScale;
@@ -37,10 +35,10 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerCanMove = false;
         gameVariables.coinsCollected = 0;
         Debug.Log(objectsInGame.itemObsticle[0].name);
         totalCoins.text = "" + gameVariables.coinsCollected;
-        audioDelayed = 18f;
         startSpeed = 0;
         initialSpeed = gameVariables.playerSpeed;
         gameVariables.playerSpeed = startSpeed;
@@ -58,7 +56,7 @@ public class Player : MonoBehaviour
         gameTime += Time.deltaTime;
         resetTimer += Time.deltaTime;
         //Debug.Log(resetTimer);
-        TheTimer();
+        //TheTimer();
         CountDownStart();
         MovementInput();
         if (currentPosition.x > 5)
@@ -188,7 +186,7 @@ public class Player : MonoBehaviour
             if (!gameSounds.isPlaying)
             {
                 gameSounds.clip = soundProperties.audioGameCount;
-                gameSounds.PlayDelayed(audioDelayed*Time.deltaTime);
+                gameSounds.PlayDelayed(soundProperties.gameCountDelay*Time.deltaTime);
             }
         }
         else if (resetTimer >1 && resetTimer <= 2 && transform.position == initialPosition)
@@ -197,7 +195,7 @@ public class Player : MonoBehaviour
             if (!gameSounds.isPlaying)
             {
                 gameSounds.clip = soundProperties.audioGameCount;
-                gameSounds.PlayDelayed(audioDelayed * Time.deltaTime);
+                gameSounds.PlayDelayed(soundProperties.gameCountDelay * Time.deltaTime);
             }
         }
         else if (resetTimer >2 && resetTimer <= 3 && transform.position == initialPosition)
@@ -206,7 +204,7 @@ public class Player : MonoBehaviour
             if (!gameSounds.isPlaying)
             {
                 gameSounds.clip = soundProperties.audioGameCount;
-                gameSounds.PlayDelayed(audioDelayed * Time.deltaTime);
+                gameSounds.PlayDelayed(soundProperties.gameCountDelay * Time.deltaTime);
             }
         }
         else if (resetTimer > 3 && transform.position == initialPosition)
@@ -215,9 +213,9 @@ public class Player : MonoBehaviour
             if (!gameSounds.isPlaying)
             {
                 gameSounds.clip = soundProperties.audioGameCount;
-                gameSounds.PlayDelayed(audioDelayed * Time.deltaTime);
+                gameSounds.PlayDelayed(soundProperties.gameCountDelay * Time.deltaTime);
             }
-            Debug.Log("Should Start Moving Now.");
+            //Debug.Log("Should Start Moving Now.");
             gameVariables.playerSpeed = initialSpeed;
             playerCanMove = true;
         }
