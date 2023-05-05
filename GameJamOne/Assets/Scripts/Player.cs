@@ -128,12 +128,12 @@ public class Player : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Space) && canJump)
             {
-                playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * gameVariables.playerJumpHeight, transform.position.z));
+                playerRiBo.AddForce(Vector3.up * gameVariables.playerJumpHeight);
                 transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             }
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * (-gameVariables.playerJumpHeight / 3), transform.position.z));
+                playerRiBo.AddForce(Vector3.up * -(gameVariables.playerJumpHeight*2));
                 transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             }
             if (Input.GetKeyDown(KeyCode.LeftControl))
