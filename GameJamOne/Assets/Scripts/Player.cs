@@ -13,11 +13,13 @@ public class Player : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countDownText;
     [SerializeField] private TextMeshProUGUI totalCoins;
     [SerializeField] private TextMeshProUGUI countTimer;
+    [SerializeField] private TextMeshProUGUI playerHUDHealth;
     [SerializeField] private AudioSource playerSounds;
     [SerializeField] private AudioSource gameSounds;
     [SerializeField] private GameVariables gameVariables;
     [SerializeField] private GameObjects objectsInGame;
     [SerializeField] private SoundProperties soundProperties;
+    [SerializeField] private GameObject endScreen;
 
     private bool canJump;
     private bool playerCanMove;
@@ -28,10 +30,10 @@ public class Player : MonoBehaviour
     private Vector3 initialPosition;
     private Vector3 initialScale;
 
-
     // Start is called before the first frame update
     void Start()
     {
+        endScreen.SetActive(false);
         initialPosition = transform.position;
         gameVariables.playerSpeed = 20;
         initialSpeed = gameVariables.playerSpeed;
@@ -41,6 +43,8 @@ public class Player : MonoBehaviour
         gameVariables.playerSpeed = startSpeed;
         playerCanMove = false;
 
+        gameVariables.goodDecision = 0;
+        gameVariables.badDecision = 0;
         gameVariables.playerMaxHealth = 100;
         gameVariables.playerCurrentHealth = 100;
         gameVariables.coinsCollected = 0;
@@ -48,18 +52,17 @@ public class Player : MonoBehaviour
 
         currentPosition = transform.position;
     }
-
     // Update is called once per frame
     void Update()
     {
         resetTimer += Time.deltaTime;
+        playerHUDHealth.text = "" + gameVariables.playerCurrentHealth;
         PlayerDead();
         CountDownStart();
         MovementInput();
         NotOffTrack();
         transform.position += transform.forward * Time.deltaTime * gameVariables.playerSpeed;
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Obstacle")
@@ -75,6 +78,14 @@ public class Player : MonoBehaviour
             gameVariables.coinsCollected++;
             Destroy(other.gameObject);
             totalCoins.text = "" + gameVariables.coinsCollected;
+            if (gameVariables.playerCurrentHealth >= 50)
+            {
+                gameVariables.goodDecision += 1;
+            }
+            else
+            {
+                gameVariables.badDecision += 1;
+            }
         }
         if (other.gameObject.tag == "Orb")
         {
@@ -83,9 +94,16 @@ public class Player : MonoBehaviour
                 gameVariables.playerCurrentHealth += 10;
                 Destroy(other.gameObject);
             }
+            if (gameVariables.playerCurrentHealth <= 50)
+            {
+                gameVariables.goodDecision += 1;
+            }
+            else
+            {
+                gameVariables.badDecision += 1;
+            }
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         if(other.gameObject.layer == 3)
@@ -95,7 +113,6 @@ public class Player : MonoBehaviour
             
         }
     }
-
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.layer == 3)
@@ -103,12 +120,10 @@ public class Player : MonoBehaviour
             canJump = true;
         }
     }
-
     private void OnCollisionExit(Collision collision)
     {
         canJump = false;
     }
-
     private void MovementInput()
     {
         if (playerCanMove == true)
@@ -154,11 +169,11 @@ public class Player : MonoBehaviour
             }
         }
     }  
-
     private void PlayerDead()
     {
         if (gameVariables.playerCurrentHealth <= 0)
         {
+            endScreen.SetActive(true);
             playerCanMove = false;
             gameVariables.playerSpeed = 0;
         }
@@ -181,7 +196,6 @@ public class Player : MonoBehaviour
         resetTimer = 0;
         Debug.Log("Time was Reset to 0");
     }
-
     private void CountDownStart()
     {
         if (resetTimer <=1 && transform.position == initialPosition)
