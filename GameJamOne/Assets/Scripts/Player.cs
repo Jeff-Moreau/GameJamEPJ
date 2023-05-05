@@ -41,7 +41,8 @@ public class Player : MonoBehaviour
         gameVariables.playerSpeed = startSpeed;
         playerCanMove = false;
 
-        gameVariables.playerHealth = 100;
+        gameVariables.playerMaxHealth = 100;
+        gameVariables.playerCurrentHealth = 100;
         gameVariables.coinsCollected = 0;
         totalCoins.text = "" + gameVariables.coinsCollected;
 
@@ -63,7 +64,7 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.tag == "Obstacle")
         {
-            gameVariables.playerHealth -= 10;
+            gameVariables.playerCurrentHealth -= 10;
         }
         if (other.gameObject.layer == 3)
         {
@@ -77,8 +78,11 @@ public class Player : MonoBehaviour
         }
         if (other.gameObject.tag == "Orb")
         {
-            gameVariables.playerHealth += 10;
-            Destroy(other.gameObject);
+            if (gameVariables.playerCurrentHealth < gameVariables.playerMaxHealth)
+            {
+                gameVariables.playerCurrentHealth += 10;
+                Destroy(other.gameObject);
+            }
         }
     }
 
@@ -87,7 +91,7 @@ public class Player : MonoBehaviour
         if(other.gameObject.layer == 3)
         {
             
-            Destroy(other.gameObject, 0.5f);
+            Destroy(other.gameObject, 2);
             
         }
     }
@@ -153,7 +157,7 @@ public class Player : MonoBehaviour
 
     private void PlayerDead()
     {
-        if (gameVariables.playerHealth == 0)
+        if (gameVariables.playerCurrentHealth <= 0)
         {
             playerCanMove = false;
             gameVariables.playerSpeed = 0;
