@@ -4,6 +4,7 @@ using System.Threading;
 using UnityEditor;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
@@ -18,15 +19,11 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObjects objectsInGame;
     [SerializeField] private SoundProperties soundProperties;
 
-    private int timeMiliSeconds;
-    private int timeSeconds;
-    private int timeMinutes;
     private bool canJump;
     private bool playerCanMove;
     private float initialSpeed;
     private float startSpeed;
     private float resetTimer;
-    private float gameTime;
     private Vector3 currentPosition;
     private Vector3 initialPosition;
     private Vector3 initialScale;
@@ -35,54 +32,29 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerCanMove = false;
-        gameVariables.coinsCollected = 0;
-        Debug.Log(objectsInGame.itemObsticle[0].name);
-        totalCoins.text = "" + gameVariables.coinsCollected;
-        startSpeed = 0;
-        initialSpeed = gameVariables.playerSpeed;
-        gameVariables.playerSpeed = startSpeed;
         initialPosition = transform.position;
-        currentPosition = transform.position;
+        initialSpeed = gameVariables.playerSpeed;
         initialScale = transform.localScale;
-        timeMiliSeconds = 0;
-        timeSeconds = 0;
-        timeMinutes = 0;
+
+        startSpeed = 0;
+        gameVariables.playerSpeed = startSpeed;
+        playerCanMove = false;
+
+        gameVariables.playerHealth = 100;
+        gameVariables.coinsCollected = 0;
+        totalCoins.text = "" + gameVariables.coinsCollected;
+
+        currentPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        gameTime += Time.deltaTime;
         resetTimer += Time.deltaTime;
-        //Debug.Log(resetTimer);
-        //TheTimer();
         CountDownStart();
         MovementInput();
-        if (currentPosition.x > 5)
-        {
-            currentPosition.x = 5;
-            transform.position = currentPosition;
-        }
-        if (currentPosition.x < -5)
-        {
-            currentPosition.x = -5;
-            transform.position = currentPosition;
-        }
+        NotOffTrack();
         transform.position += transform.forward * Time.deltaTime * gameVariables.playerSpeed;
-    }
-
-    private void TheTimer()
-    {
-        if (gameTime < 1)
-        {
-            timeMiliSeconds = (int)gameTime;
-        }
-        if (gameTime >= 1 && gameTime <60)
-        {
-            timeSeconds = (int)gameTime;
-        }
-        countTimer.text = "" + timeMinutes + ":" + timeSeconds + ":" + timeMiliSeconds;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -102,6 +74,11 @@ public class Player : MonoBehaviour
             gameVariables.coinsCollected++;
             Destroy(other.gameObject);
             totalCoins.text = "" + gameVariables.coinsCollected;
+        }
+        if (other.gameObject.tag == "Orb")
+        {
+            gameVariables.playerHealth += 10;
+            Destroy(other.gameObject);
         }
     }
 
@@ -152,10 +129,12 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) && canJump)
             {
                 playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * gameVariables.playerJumpHeight, transform.position.z));
+                transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             }
             if (Input.GetKeyUp(KeyCode.Space))
             {
                 playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * (-gameVariables.playerJumpHeight / 3), transform.position.z));
+                transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             }
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
@@ -172,6 +151,19 @@ public class Player : MonoBehaviour
         }
     }  
 
+    private void NotOffTrack()
+    {
+        if (currentPosition.x > 5)
+        {
+            currentPosition.x = 5;
+            transform.position = currentPosition;
+        }
+        if (currentPosition.x < -5)
+        {
+            currentPosition.x = -5;
+            transform.position = currentPosition;
+        }
+    }
     private void ResetTimer()
     {
         resetTimer = 0;
