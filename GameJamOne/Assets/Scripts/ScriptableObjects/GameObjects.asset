@@ -17,5 +17,3 @@ MonoBehaviour:
   itemObsticle:
   - {fileID: 6232481989326057297, guid: 9eb2da308185ca44d99e4e9f007f26aa, type: 3}
   - {fileID: 6232481989326057297, guid: 0a26a776b081a3e42a7650ea18bf1ba6, type: 3}
-  - {fileID: 6232481989326057297, guid: 1376e391ddf012b4e943e2656dd86c54, type: 3}
-  - {fileID: 6232481989326057297, guid: 01c023a710f232641acac85017e491e6, type: 3}
