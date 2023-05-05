@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObsticleSpawnerMid : MonoBehaviour
+public class ObstacleSpawner : MonoBehaviour
 {
-    [SerializeField] GameObjects obsticles;
+    [SerializeField] GameObjects obstacles;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,11 +15,11 @@ public class ObsticleSpawnerMid : MonoBehaviour
     {
         if (numCheck <= 3)
         {
-            Instantiate(obsticles.itemObsticle[Random.Range(0, obsticles.itemObsticle.Length)], transform.position, transform.rotation);
+            Instantiate(obstacles.itemObstacle[0], transform.position, transform.rotation);
         }
         else if (numCheck == 6)
         {
-            Instantiate(obsticles.itemObsticle[Random.Range(0, obsticles.itemObsticle.Length)], transform.position, transform.rotation);
+            Instantiate(obstacles.itemObstacle[0], transform.position, transform.rotation);
         }
         else if (numCheck > 6)
         {

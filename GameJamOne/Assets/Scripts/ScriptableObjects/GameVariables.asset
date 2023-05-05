@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 812a8f688a207ff48897afa7039caa53, type: 3}
   m_Name: GameVariables
   m_EditorClassIdentifier: 
-  playerHealth: 170
-  coinsCollected: 24
-  playerSpeed: 20
+  playerHealth: 0
+  coinsCollected: 0
+  playerSpeed: 0
   playerJumpHeight: 900

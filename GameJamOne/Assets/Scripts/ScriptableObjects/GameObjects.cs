@@ -7,5 +7,5 @@ public class GameObjects : ScriptableObject
 {
     [SerializeField] public GameObject itemCoin;
     [SerializeField] public GameObject itemHealth;
-    [SerializeField] public GameObject[] itemObsticle;
+    [SerializeField] public GameObject[] itemObstacle;
 }

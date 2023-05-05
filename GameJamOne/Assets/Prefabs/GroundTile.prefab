@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3047041617982944140}
   - component: {fileID: 5104309571772581449}
   m_Layer: 3
-  m_Name: ObsticleSpawnerLeftLow
+  m_Name: ObstacleSpawnerLeftLow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b92b32159aec0ec4ab415af4930b4707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obsticles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
+  obstacles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
 --- !u!1 &2740929061784211358
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 387535028245352714}
   - component: {fileID: 2738192739390380386}
   m_Layer: 3
-  m_Name: ObsticleSpawnerRightHigh
+  m_Name: ObstacleSpawnerRightHigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b92b32159aec0ec4ab415af4930b4707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obsticles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
+  obstacles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
 --- !u!1 &3667765789380481188
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 8969545169682086444}
   - component: {fileID: 2808964661156056169}
   m_Layer: 3
-  m_Name: ObsticleSpawnerLeftHigh
+  m_Name: ObstacleSpawnerLeftHigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,7 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b92b32159aec0ec4ab415af4930b4707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obsticles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
+  obstacles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
 --- !u!1 &3784773305196217620
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,7 +459,7 @@ GameObject:
   - component: {fileID: 305917535328019926}
   - component: {fileID: 5104309571772581451}
   m_Layer: 3
-  m_Name: ObsticleSpawnerRightLow
+  m_Name: ObstacleSpawnerRightLow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -555,7 +555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b92b32159aec0ec4ab415af4930b4707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obsticles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
+  obstacles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
 --- !u!1 &3871684479508787789
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,7 +1318,7 @@ GameObject:
   - component: {fileID: 1566657621134516198}
   - component: {fileID: 4569793879910394774}
   m_Layer: 3
-  m_Name: ObsticleSpawnerCenterLow
+  m_Name: ObstacleSpawnerCenterLow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1414,7 +1414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46402e69b1bf1e4badcc2ecdca8c34d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obsticles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
+  obstacles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
 --- !u!1 &8566253775629774907
 GameObject:
   m_ObjectHideFlags: 0
@@ -1429,7 +1429,7 @@ GameObject:
   - component: {fileID: 5947103049485539067}
   - component: {fileID: 2582296327517920524}
   m_Layer: 3
-  m_Name: ObsticleSpawnerCenterHigh
+  m_Name: ObstacleSpawnerCenterHigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1525,4 +1525,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46402e69b1bf1e4badcc2ecdca8c34d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obsticles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
+  obstacles: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}

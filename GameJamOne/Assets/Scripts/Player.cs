@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         initialPosition = transform.position;
+        gameVariables.playerSpeed = 20;
         initialSpeed = gameVariables.playerSpeed;
         initialScale = transform.localScale;
 
@@ -51,6 +52,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         resetTimer += Time.deltaTime;
+        PlayerDead();
         CountDownStart();
         MovementInput();
         NotOffTrack();
@@ -59,11 +61,9 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Obsticle")
+        if (other.gameObject.tag == "Obstacle")
         {
-            gameVariables.playerSpeed = 0;
-            transform.position = initialPosition;
-            ResetTimer();
+            gameVariables.playerHealth -= 10;
         }
         if (other.gameObject.layer == 3)
         {
@@ -151,6 +151,14 @@ public class Player : MonoBehaviour
         }
     }  
 
+    private void PlayerDead()
+    {
+        if (gameVariables.playerHealth == 0)
+        {
+            playerCanMove = false;
+            gameVariables.playerSpeed = 0;
+        }
+    }
     private void NotOffTrack()
     {
         if (currentPosition.x > 5)
