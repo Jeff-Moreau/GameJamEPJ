@@ -1929,6 +1929,7 @@ MonoBehaviour:
   objectsInGame: {fileID: 11400000, guid: f30d5b794643ee043bb47cb4de5d34f1, type: 2}
   soundProperties: {fileID: 11400000, guid: 9e0fd5501afbdb141bb0f277fd23d19c, type: 2}
   endScreen: {fileID: 1898152992}
+  mainHUD: {fileID: 380261989}
 --- !u!136 &1782507009
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2144,6 +2145,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 770aa079eff453846a4202ace01bfa08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameVariables: {fileID: 11400000, guid: 62ca60721d62e244fa17075ed7c48edd, type: 2}
+  goodDecisions: {fileID: 2015946774}
+  badDecisions: {fileID: 652002433}
 --- !u!1 &1981484820
 GameObject:
   m_ObjectHideFlags: 0

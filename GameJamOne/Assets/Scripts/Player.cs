@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObjects objectsInGame;
     [SerializeField] private SoundProperties soundProperties;
     [SerializeField] private GameObject endScreen;
+    [SerializeField] private GameObject mainHUD;
 
     private bool canJump;
     private bool playerCanMove;
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mainHUD.SetActive(true);
         endScreen.SetActive(false);
         initialPosition = transform.position;
         gameVariables.playerSpeed = 20;
@@ -173,6 +175,7 @@ public class Player : MonoBehaviour
     {
         if (gameVariables.playerCurrentHealth <= 0)
         {
+            mainHUD.SetActive(false);
             endScreen.SetActive(true);
             playerCanMove = false;
             gameVariables.playerSpeed = 0;
