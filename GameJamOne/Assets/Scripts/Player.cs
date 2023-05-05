@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        totalCoins.text = "" + coinsCollected;
+        //totalCoins.text = "" + coinsCollected;
         audioDelayed = 18f;
         sourceCounter = GetComponent<AudioSource>();
         sourceCounter.clip = counter;
@@ -85,7 +85,7 @@ public class Player : MonoBehaviour
         {
             coinsCollected++;
             Destroy(other.gameObject);
-            totalCoins.text = "" + coinsCollected;
+            //totalCoins.text = "" + coinsCollected;
         }
     }
 
