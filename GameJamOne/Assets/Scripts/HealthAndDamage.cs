@@ -7,14 +7,29 @@ public class HealthAndDamage : MonoBehaviour
 {
     public float maxHealth;
     public float health;
-    
-    
+    private bool invincible = false;
+    public float invincibility;
+    public float invincibilityDuration;
+
     // Start is called before the first frame update
     void Start()
     {
         health = maxHealth;
+        invincibility = float.PositiveInfinity;
     }
 
+    private void Update()
+    {
+        if (invincibility < invincibilityDuration)
+        {
+            invincibility += Time.deltaTime;
+            invincible = true;
+        }
+        else
+        {
+            invincible = false;
+        }
+    }
     public void TakeDamage(float damage)
     {
         health -= damage;
@@ -24,16 +39,25 @@ public class HealthAndDamage : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            TakeDamage(10);
-            if (health > 0)
+            if (!invincible)
             {
-                Destroy(collision.gameObject);
+                TakeDamage(10);
+                if (health > 0)
+                {
+                    Destroy(collision.gameObject);
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
             }
             else
             {
-                Destroy(gameObject);
+                Destroy(collision.gameObject);
             }
         }
+        
+        
     }
 
     public void healing(float heal)
@@ -48,9 +72,16 @@ public class HealthAndDamage : MonoBehaviour
             healing(10);
             Destroy(other.gameObject);
         }
+
+        if (other.gameObject.CompareTag("Shield"))
+        {
+            invincibility = 0f;
+            
+            Destroy(other.gameObject);
+        }
     }
 
 
-
+    
 
 }

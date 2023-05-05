@@ -5,7 +5,7 @@ using UnityEngine;
 public class CollectingCoins : MonoBehaviour
 {
     public int theScore;
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Coin"))
@@ -13,5 +13,7 @@ public class CollectingCoins : MonoBehaviour
             theScore += 10;
             Destroy(other.gameObject);
         }
+
+        
     }
 }
