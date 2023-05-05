@@ -7,20 +7,17 @@ using TMPro;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] AudioSource source;
-    [SerializeField] AudioSource sourceCounter;
-    [SerializeField] AudioClip clip;
-    [SerializeField] AudioClip counter;
-    [SerializeField] float playerSpeed;
-    [SerializeField] float playerJumpHeight;
-    [SerializeField] Rigidbody playerRiBo;
-    [SerializeField] TextMeshProUGUI countDownText = null;
-    [SerializeField] TextMeshProUGUI totalCoins = null;
-    [SerializeField] GameObject spawner;
-    [SerializeField] GameObject spawnerOne;
-    [SerializeField] TextMeshProUGUI countTimer;
+    [SerializeField] private Rigidbody playerRiBo;
+    [SerializeField] private GameObject spawner;
+    [SerializeField] private TextMeshProUGUI countDownText = null;
+    [SerializeField] private TextMeshProUGUI totalCoins = null;
+    [SerializeField] private TextMeshProUGUI countTimer;
+    [SerializeField] private AudioSource playerSounds;
+    [SerializeField] private AudioSource gameSounds;
+    [SerializeField] private GameVariables gameVariables;
+    [SerializeField] private GameObjects objectsInGame;
+    [SerializeField] private SoundProperties soundProperties;
 
-    private int coinsCollected = 0;
     private float audioDelayed;
     private bool canJump;
     private float initialSpeed;
@@ -40,13 +37,13 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        totalCoins.text = "" + coinsCollected;
+        gameVariables.coinsCollected = 0;
+        Debug.Log(objectsInGame.itemObsticle[0].name);
+        totalCoins.text = "" + gameVariables.coinsCollected;
         audioDelayed = 18f;
-        sourceCounter = GetComponent<AudioSource>();
-        sourceCounter.clip = counter;
         startSpeed = 0;
-        initialSpeed = playerSpeed;
-        playerSpeed = startSpeed;
+        initialSpeed = gameVariables.playerSpeed;
+        gameVariables.playerSpeed = startSpeed;
         initialPosition = transform.position;
         currentPosition = transform.position;
         initialScale = transform.localScale;
@@ -74,7 +71,7 @@ public class Player : MonoBehaviour
             currentPosition.x = -5;
             transform.position = currentPosition;
         }
-        transform.position += transform.forward * Time.deltaTime * playerSpeed;
+        transform.position += transform.forward * Time.deltaTime * gameVariables.playerSpeed;
     }
 
     private void TheTimer()
@@ -94,20 +91,19 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.tag == "Obsticle")
         {
-            playerSpeed = 0;
+            gameVariables.playerSpeed = 0;
             transform.position = initialPosition;
             ResetTimer();
         }
         if (other.gameObject.layer == 3)
         {
             spawner.GetComponent<GroundSpawner>().SpawnTile();
-            //spawnerOne.GetComponent<ItemSpawner>().ItemRandomSpawn();
         }
         if (other.gameObject.tag == "Coin")
         {
-            coinsCollected++;
+            gameVariables.coinsCollected++;
             Destroy(other.gameObject);
-            totalCoins.text = "" + coinsCollected;
+            totalCoins.text = "" + gameVariables.coinsCollected;
         }
     }
 
@@ -140,13 +136,13 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.D) && currentPosition.x < 4)
             {
-                source.PlayOneShot(clip);
+                playerSounds.PlayOneShot(soundProperties.audioPlayerMove);
                 transform.position = new Vector3(transform.position.x + 5, transform.position.y, transform.position.z);
                 currentPosition = transform.position;
             }
             if (Input.GetKeyDown(KeyCode.A) && currentPosition.x > -4)
             {
-                source.PlayOneShot(clip);
+                playerSounds.PlayOneShot(soundProperties.audioPlayerMove);
                 transform.position = new Vector3(transform.position.x - 5, transform.position.y, transform.position.z);
                 currentPosition = transform.position;
             }
@@ -157,15 +153,15 @@ public class Player : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Space) && canJump)
             {
-                playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * playerJumpHeight, transform.position.z));
+                playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * gameVariables.playerJumpHeight, transform.position.z));
             }
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * (-playerJumpHeight / 3), transform.position.z));
+                playerRiBo.AddForce(new Vector3(transform.position.x, transform.position.y * (-gameVariables.playerJumpHeight / 3), transform.position.z));
             }
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                source.PlayOneShot(clip);
+                playerSounds.PlayOneShot(soundProperties.audioPlayerMove);
                 transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
                 transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
                 currentPosition = transform.position;
@@ -189,40 +185,40 @@ public class Player : MonoBehaviour
         if (resetTimer <=1 && transform.position == initialPosition)
         { 
             countDownText.text = "3";
-            if (!sourceCounter.isPlaying)
+            if (!gameSounds.isPlaying)
             {
-                sourceCounter.clip = counter;
-                sourceCounter.PlayDelayed(audioDelayed*Time.deltaTime);
+                gameSounds.clip = soundProperties.audioGameCount;
+                gameSounds.PlayDelayed(audioDelayed*Time.deltaTime);
             }
         }
         else if (resetTimer >1 && resetTimer <= 2 && transform.position == initialPosition)
         {
             countDownText.text = "2";
-            if (!sourceCounter.isPlaying)
+            if (!gameSounds.isPlaying)
             {
-                sourceCounter.clip = counter;
-                sourceCounter.PlayDelayed(audioDelayed * Time.deltaTime);
+                gameSounds.clip = soundProperties.audioGameCount;
+                gameSounds.PlayDelayed(audioDelayed * Time.deltaTime);
             }
         }
         else if (resetTimer >2 && resetTimer <= 3 && transform.position == initialPosition)
         {
             countDownText.text = "1";
-            if (!sourceCounter.isPlaying)
+            if (!gameSounds.isPlaying)
             {
-                sourceCounter.clip = counter;
-                sourceCounter.PlayDelayed(audioDelayed * Time.deltaTime);
+                gameSounds.clip = soundProperties.audioGameCount;
+                gameSounds.PlayDelayed(audioDelayed * Time.deltaTime);
             }
         }
         else if (resetTimer > 3 && transform.position == initialPosition)
         {
             countDownText.text = "GO";
-            if (!sourceCounter.isPlaying)
+            if (!gameSounds.isPlaying)
             {
-                sourceCounter.clip = counter;
-                sourceCounter.PlayDelayed(audioDelayed * Time.deltaTime);
+                gameSounds.clip = soundProperties.audioGameCount;
+                gameSounds.PlayDelayed(audioDelayed * Time.deltaTime);
             }
             Debug.Log("Should Start Moving Now.");
-            playerSpeed = initialSpeed;
+            gameVariables.playerSpeed = initialSpeed;
             playerCanMove = true;
         }
         else if (resetTimer > 4)
