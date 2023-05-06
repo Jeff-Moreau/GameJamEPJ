@@ -9,12 +9,12 @@ public class CamFollow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        yLock = transform.position.y;
+        yLock = transform.position.x;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(transform.position.x, yLock, transform.position.z);
+        transform.position = new Vector3(yLock, transform.position.y, transform.position.z);
     }
 }

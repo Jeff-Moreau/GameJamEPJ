@@ -8,5 +8,8 @@ public class SoundProperties : ScriptableObject
     public AudioClip audioMainMusic;
     public AudioClip audioPlayerMove;
     public AudioClip audioGameCount;
+    public AudioClip audioCoin;
+    public AudioClip audioHit;
+    public AudioClip audioHealth;
     public float gameCountDelay;
 }

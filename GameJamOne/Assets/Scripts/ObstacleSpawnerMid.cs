@@ -15,11 +15,13 @@ public class ObstacleSpawnerMid : MonoBehaviour
     {
         if (numCheck <= 3)
         {
-            Instantiate(obstacles.itemObstacle[Random.Range(0, obstacles.itemObstacle.Length)], transform.position, transform.rotation);
+            int itemObs = Random.Range(0, obstacles.itemObstacle.Length);
+            Instantiate(obstacles.itemObstacle[itemObs], transform.position, obstacles.itemObstacle[itemObs].transform.rotation);
         }
         else if (numCheck == 6)
         {
-            Instantiate(obstacles.itemObstacle[Random.Range(0, obstacles.itemObstacle.Length)], transform.position, transform.rotation);
+            int itemObs = Random.Range(0, obstacles.itemObstacle.Length);
+            Instantiate(obstacles.itemObstacle[itemObs], transform.position, obstacles.itemObstacle[itemObs].transform.rotation);
         }
         else if (numCheck > 6)
         {

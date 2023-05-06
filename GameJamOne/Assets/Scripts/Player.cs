@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameVariables gameVariables;
     [SerializeField] private GameObjects objectsInGame;
     [SerializeField] private SoundProperties soundProperties;
+    [SerializeField] private AudioSource audioMusic;
     [SerializeField] private GameObject endScreen;
     [SerializeField] private GameObject mainHUD;
 
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour
     private Vector3 currentPosition;
     private Vector3 initialPosition;
     private Vector3 initialScale;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +72,7 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.tag == "Obstacle")
         {
+            playerSounds.PlayOneShot(soundProperties.audioHit);
             gameVariables.playerCurrentHealth -= 10;
         }
         if (other.gameObject.layer == 3)
@@ -79,6 +82,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.tag == "Coin")
         {
             gameVariables.coinsCollected++;
+            playerSounds.PlayOneShot(soundProperties.audioCoin);
             Destroy(other.gameObject);
             totalCoins.text = "" + gameVariables.coinsCollected;
             if (gameVariables.playerCurrentHealth >= 50)
@@ -94,6 +98,7 @@ public class Player : MonoBehaviour
         {
             if (gameVariables.playerCurrentHealth < gameVariables.playerMaxHealth)
             {
+                playerSounds.PlayOneShot(soundProperties.audioHealth);
                 gameVariables.playerCurrentHealth += 10;
                 Destroy(other.gameObject);
             }
@@ -180,6 +185,7 @@ public class Player : MonoBehaviour
             endScreen.SetActive(true);
             playerCanMove = false;
             gameVariables.playerSpeed = 0;
+            audioMusic.Stop();
         }
     }
     private void NotOffTrack()
@@ -245,6 +251,7 @@ public class Player : MonoBehaviour
             //Debug.Log("Should Start Moving Now.");
             gameVariables.playerSpeed = initialSpeed;
             playerCanMove = true;
+            audioMusic.Play();
         }
         else if (resetTimer > 4)
         {

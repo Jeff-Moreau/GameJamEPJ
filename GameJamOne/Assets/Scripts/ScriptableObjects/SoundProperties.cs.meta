@@ -7,6 +7,9 @@ MonoImporter:
   - audioMainMusic: {fileID: 8300000, guid: 07a1bed84023e7147b0af19c09a72a3a, type: 3}
   - audioPlayerMove: {fileID: 8300000, guid: e27cc9a88b4aa2b4e8472294b857dd10, type: 3}
   - audioGameCount: {fileID: 8300000, guid: 8acbae28c19f326469e47d95f870fab9, type: 3}
+  - audioCoin: {fileID: 8300000, guid: fabe797dc901cc8448b95c18e1502647, type: 3}
+  - audioHit: {fileID: 8300000, guid: 0c9c5319fbfa5ef469ff3bb66e1d6547, type: 3}
+  - audioHealth: {fileID: 8300000, guid: bdbd129c43500114da38ea8552d3f915, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

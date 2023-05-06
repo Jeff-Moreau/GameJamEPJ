@@ -17,3 +17,4 @@ MonoBehaviour:
   itemObstacle:
   - {fileID: 6232481989326057297, guid: 9eb2da308185ca44d99e4e9f007f26aa, type: 3}
   - {fileID: 6232481989326057297, guid: 0a26a776b081a3e42a7650ea18bf1ba6, type: 3}
+  - {fileID: 8176868899396272890, guid: 56a971b148af40d4788180e05c97d6a4, type: 3}
